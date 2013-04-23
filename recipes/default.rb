@@ -24,6 +24,17 @@ package "openais" do
   action :install
 end
 
+bindnetaddr = node['osops_networks']['management']
+
+# Overwrite previous config
+template "/etc/corosync/corosync.conf" do
+  source "corosync.conf.erb"
+  owner "root"
+  group "root"
+  mode 0600
+  variables(:bindnetaddr => bindnetaddr)
+end
+
 # Overwrite previous config
 template "/etc/default/corosync" do
   source "corosync.default.upstart.erb"
